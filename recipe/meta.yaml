@@ -1,38 +1,48 @@
 {% set name = "mkdocs-graphviz" %}
-{% set version = "1.5.3" %}
+{% set version = "2.0.2" %}
+{% set python_min = "3.10" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mkdocs_graphviz-{{ version }}.tar.gz
-  sha256: 913fbd77a0b4f2683b6d4f244f1f7d4e421866f9a7b70057900700909052709c
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/mkdocs_graphviz-{{ version }}.tar.gz
+  sha256: 38dc26c4f439b5ebbb8c99f6b173285b0aee923957c9ea6e5bced82f99d1cb23
 
 build:
   noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
+    - python {{ python_min }}.*
     - pip
-    - python >=3.6
+    - setuptools >=77
+    - wheel
   run:
-    - markdown >=2.3.1
-    - python >=3.6
+    - python >={{ python_min }}
+    - mkdocs >=1.4,<2.0
+    - markdown >=3.4
+    - pyyaml >=6.0
+    - graphviz
 
 test:
   imports:
     - mkdocs_graphviz
   commands:
     - pip check
+    - dot -V
   requires:
     - pip
+    - python {{ python_min }}.*
 
 about:
-  home: https://gitlab.com/rod2ik/mkdocs-graphviz.git
-  summary: Render Graphviz graphs in Mkdocs directly from your Markdown
+  home: https://rod2ik.gitlab.io/mkdocs-graphviz/
+  dev_url: https://gitlab.com/rod2ik/mkdocs-graphviz
+  doc_url: https://rod2ik.gitlab.io/mkdocs-graphviz/
+  summary: Modern MkDocs plugin for Graphviz with scoped configuration and native light/dark rendering
   license: GPL-3.0-or-later
   license_file: LICENSE
 

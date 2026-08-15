@@ -1,6 +1,23 @@
 github:
   branch_name: main
   tooling_branch_name: main
+
 conda_forge_output_validation: true
+
 conda_build:
   pkg_format: '2'
+
+bot:
+  # New versions are detected from PyPI, which is the source of truth.
+  version_updates:
+    sources:
+      - pypi
+
+  # Keep Python requirements synchronized with upstream metadata when possible.
+  inspection: update-grayskull
+
+  # Only successful version-update PRs are eligible for automatic merging.
+  automerge: version
+
+  # Do not merge a version update if its dependency environment is unsolvable.
+  check_solvable: true
